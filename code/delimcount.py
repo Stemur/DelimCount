@@ -7,8 +7,10 @@ locale.setlocale(locale.LC_NUMERIC, 'en_US')
 
 # Global Variables
 filesize = 0
+countonly = False
 
 def processfile(inputfile):
+	global countonly
 	global filesize
 	lineno = 1
 	try:
@@ -16,11 +18,9 @@ def processfile(inputfile):
 			delimcount = 0
 			read_data = f.readline()
 			while read_data:
-				if lineno == 1:
-					print 'Ct Line Data'
 				delimcount = read_data.count(',')
 				filesize += len(read_data)
-				outputdata(read_data, delimcount)
+				outputdata(read_data, delimcount, lineno)
 				lineno += 1
 				read_data = f.readline()
 	except IOError as e:
@@ -28,15 +28,21 @@ def processfile(inputfile):
 		sys.exit(2)
 	f.close()
 
-def outputdata(linedata, delcount):
-	print '%i ' % (delcount),
-	print linedata.rstrip()
-		
+def outputdata(linedata, delcount, lineno):
+	global countonly
+	print 'Line : {:<5}'.format(lineno), # % (lineno),
+	if countonly == False:
+		print ' {:<5}'.format(delcount),
+		print linedata.rstrip()
+	else:
+		print ' Delimiter Count : %i ' % (delcount)
+
 def main(argv):
+	global countonly
 	inputfile = ''
-	usgstr = 'Correct useage is: delimcount.py -i <inputfile>'
+	usgstr = 'Correct useage is: delimcount.py [-c] -i <inputfile>'
 	try:
-		opts, args = getopt.getopt(argv,"i:",['ifile='])
+		opts, args = getopt.getopt(argv,"hci:",['ifile='])
 	except getopt.GetoptError:
 		print usgstr
 		sys.exit(2)
@@ -46,8 +52,14 @@ def main(argv):
 	for opt, arg in opts:
 		if opt == '-i':
 			inputfile = arg
+		elif opt == '-h':
+			print "delimcount.py [-c] -i <inputfile>"
+			sys.exit()
+		elif opt == '-c':
+			print 'Displaying delimiter counts for each line only.'
+			countonly = True
 	if len(inputfile) == 0:
-		print "No input file name supplied. %s" & usgstr
+		print "No input file name supplied. %s" % usgstr
 		sys.exit()
 	print 'File Name : %s' % inputfile
 	processfile(inputfile)
