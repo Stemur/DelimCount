@@ -1,0 +1,3 @@
+Here,is,a,test,file.
+It,is,a,two,line,text,test,file,,,,,,,,.
+This|line|has|no|comma|delimiters
