@@ -16,6 +16,6 @@ e.g. delimcount -c -i testfile.txt -d ,
 
 #### Notes:
 The -d cli parameter - This may require an escape character to work. 
-    e.g. for a pipe delimiter, you would need to enter \|
+    e.g. for a pipe delimiter, you would need to enter \\|
     
 The default delimiter is the comma.
