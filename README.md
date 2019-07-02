@@ -10,5 +10,12 @@ delimcount [-c] -i <FileName>
     
         -c : Optional - Return a count on each line.
         -i : Required - Name of file to be inspected.
+        -d : Optional - The delimiter character to be counted.
 
-e.g. delimcount -c -i testfile.txt
+e.g. delimcount -c -i testfile.txt -d ,
+
+#### Notes:
+The -d cli parameter - This may require an escape character to work. 
+    e.g. for a pipe delimiter, you would need to enter \|
+    
+The default delimiter is the comma.
