@@ -7,7 +7,7 @@ import argparse
 locale.setlocale(locale.LC_NUMERIC, 'en_US')
 
 
-def processfile(inputfile, countonly):
+def processfile(inputfile, countonly, delim):
     filesize = 0
     lineno = 1
     try:
@@ -15,7 +15,7 @@ def processfile(inputfile, countonly):
             read_data = f.readline()
             print('File Name : %s' % inputfile)
             while read_data:
-                delimcount = read_data.count(',')
+                delimcount = read_data.count(delim)
                 filesize += len(read_data)
                 outputdata(read_data, delimcount, lineno, countonly)
                 lineno += 1
@@ -46,14 +46,20 @@ def main():
                             help='display delimiter counts on each line',
                             required=False)
     arg_parser.add_argument('-i', '--input', action='store',
-                            metavar='inputfile',
+                            metavar='[file name]',
                             dest='inputfile',
                             type=str,
                             help='the name of the file to be inspected',
                             required=True)
+    arg_parser.add_argument('-d', action='store',
+                            metavar='[delimiter]',
+                            dest='delimvalue',
+                            default=',',
+                            type=str,
+                            help='the delimiter character to be counted (may need to be escaped e.g.\|)')
 
     args = arg_parser.parse_args()
-    processfile(args.inputfile, args.countonly)
+    processfile(args.inputfile, args.countonly, args.delimvalue)
 
 
 if __name__ == "__main__":
